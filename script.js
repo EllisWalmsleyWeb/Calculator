@@ -34,3 +34,27 @@ console.log("Subtraction: 10 - 4 =", subtract(10, 4));
 console.log("Multiplication: 6 * 7 =", multiply(6, 7));
 console.log("Division: 15 / 3 =", divide(15, 3));
 console.log("Division by zero:", divide(10, 0));
+
+// Operate function
+function operate(operator, a, b) {
+  switch (operator) {
+    case "+":
+      return add(a, b);
+    case "-":
+      return subtract(a, b);
+    case "*":
+      return multiply(a, b);
+    case "/":
+      return divide(a, b);
+    default:
+      return "Error: Invalid operator";
+  }
+}
+
+// Test the operate function
+console.log("5 + 3 =", operate("+", 5, 3));
+console.log("10 - 4 =", operate("-", 10, 4));
+console.log("6 * 7 =", operate("*", 6, 7));
+console.log("15 / 3 =", operate("/", 15, 3));
+console.log("10 / 0 =", operate("/", 10, 0));
+console.log("Invalid operator:", operate("%", 10, 5));
