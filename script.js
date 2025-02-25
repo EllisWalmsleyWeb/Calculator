@@ -1,3 +1,8 @@
+// Variables to store the calculator operation
+let firstNumber = "";
+let operator = "";
+let secondNumber = "";
+
 // Basic calculator functions
 
 // Addition function
