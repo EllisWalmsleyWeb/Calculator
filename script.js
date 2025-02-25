@@ -381,4 +381,66 @@ document.addEventListener("DOMContentLoaded", function () {
 
   // Initialize the display
   updateDisplay();
+
+  // Keyboard support
+  document.addEventListener("keydown", function (event) {
+    // Prevent default actions for some keys (like '/' which might trigger browser search)
+    if (["+", "-", "*", "/", "x", "=", "Enter", "Escape", "Backspace", "."].includes(event.key)) {
+      event.preventDefault();
+    }
+
+    // Number keys (0-9)
+    if (/^[0-9]$/.test(event.key)) {
+      inputDigit(event.key);
+      updateDisplay();
+    }
+    // Decimal point
+    else if (event.key === ".") {
+      inputDecimal(".");
+      updateDisplay();
+    }
+    // Operators
+    else if (["+", "-", "*", "/"].includes(event.key)) {
+      handleOperator(event.key);
+      updateDisplay();
+    }
+    // Handle 'x' key as multiplication
+    else if (event.key === "x") {
+      handleOperator("*");
+      updateDisplay();
+    }
+    // Equals (Enter or =)
+    else if (event.key === "Enter" || event.key === "=") {
+      // Rest of the equals code...
+      if (!currentOperator || waitingForSecondOperand) return;
+
+      const inputValue = parseFloat(displayValue);
+      const result = operate(currentOperator, firstOperand, inputValue);
+      const fullEquation = equationDisplay + " = ";
+
+      displayValue = formatResult(result);
+      firstOperand = parseFloat(displayValue);
+      currentOperator = null;
+      waitingForSecondOperand = false;
+      resultDisplayed = true;
+      equationDisplay = fullEquation;
+
+      updateDisplay();
+    }
+    // Clear (Escape)
+    else if (event.key === "Escape") {
+      resetCalculator();
+      updateDisplay();
+    }
+    // Backspace
+    else if (event.key === "Backspace") {
+      handleBackspace();
+      updateDisplay();
+    }
+    // Percent (p key)
+    else if (event.key === "p" || event.key === "%") {
+      handlePercent();
+      updateDisplay();
+    }
+  });
 });
