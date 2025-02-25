@@ -1,81 +1,47 @@
-# JavaScript Calculator
+# Calculator
 
-![Calculator Preview](https://github.com/user-attachments/assets/a55923c2-2702-41bf-96fa-93f9c63d7a83)
-
-## Introduction
-A fully functional calculator web application built with 100% vanilla JavaScript. This project was created as the final project for The Odin Project foundations course.
+A simple calculator web application built with HTML, CSS, and Vanilla JavaScript. This project is part of [The Odin Project](https://www.theodinproject.com/) curriculum and serves as practice in DOM manipulation, event handling, and JavaScript logic.
 
 ## Features
-- Basic arithmetic operations: addition, subtraction, multiplication, and division
-- Decimal number support
-- Percentage calculations
-- Clear and backspace functions
-- Keyboard support for all operations
-- Continuous calculations (chaining operations)
-- Error handling for division by zero and invalid inputs
-- Responsive display
-- Visual feedback for display limits
+- Basic arithmetic operations (addition, subtraction, multiplication, and division).
+- Clear button to reset the display.
+- User-friendly interface with clickable buttons.
+- Keyboard support for entering numbers and operations.
+- Responsive design for different screen sizes.
 
-## Demo
-[Live Demo](https://elliswalmsleyweb.github.io/Calculator/)
-
-## Technologies Used
-- HTML5
-- CSS3
-- Vanilla JavaScript (No libraries or frameworks)
-
-## How to Use
-1. **Basic Operations**:
-   - Click on number buttons to input values
-   - Click on operator buttons (+, -, ×, ÷) to perform operations
-   - Click "=" to calculate the result
-   - Click "C" to clear the calculator
-
-2. **Advanced Features**:
-   - Use the backspace button to delete the last digit
-   - Click "%" to convert numbers to percentages
-   - Chain multiple operations together
-
-3. **Keyboard Support**:
-   - Numbers (0-9): Input digits
-   - Operators (+, -, *, /): Perform operations
-   - "x" key: Alternative for multiplication
-   - Enter or "=": Calculate result
-   - Escape: Clear calculator
-   - Backspace: Delete last digit
-   - "p" or "%": Percentage
-
-## Implementation Details
-- Handles floating-point precision issues
-- Provides clear error messages for invalid operations
-- Implements a comprehensive state management system
-- Follows best practices for JavaScript documentation
-
-## Possible Future Improvements
-- Add memory functions (M+, M-, MR, MC)
-- Implement scientific calculator features
-- Add support for parentheses in calculations
-- Add history of calculations
-
-## Project Structure
-```
-/calculator
-│
-├── index.html
-├── styles.css
-└── script.js
-```
+## Live Demo
+Check out the live demo: https://elliswalmsleyweb.github.io/Calculator/
 
 ## Installation
+To run this project locally:
 1. Clone the repository:
+   ```sh
+   git clone https://github.com/EllisWalmsleyWeb/Calculator.git
    ```
-   git clone https://github.com/EllisWalmsleyWeb/calculator.git
+2. Navigate to the project directory:
+   ```sh
+   cd Calculator
    ```
-2. Open `index.html` in your browser
+3. Open `index.html` in your browser.
 
-## Author
-- Ellis Walmsley
-- GitHub: [EllisWalmsleyWeb](https://github.com/EllisWalmsleyWeb)
+## Usage
+1. Click or use the keyboard to enter numbers and operations.
+2. Press "=" to calculate the result.
+3. Use "C" to clear the display and start a new calculation.
+
+## Technologies Used
+- HTML
+- CSS
+- JavaScript
+
+## Future Improvements
+- Add advanced functions (square root, exponentiation, etc.).
+- Improve UI with animations and enhanced styling.
+- Implement a history feature to track previous calculations.
+
+## License
+This project is open-source and available under the [MIT License](LICENSE).
 
 ## Acknowledgments
-- [The Odin Project](https://www.theodinproject.com/) for providing the project requirements and guidance
+Built as part of [The Odin Project](https://www.theodinproject.com/) curriculum.
+
