@@ -17,8 +17,6 @@ function updateDisplay() {
 /**
  * Handles digit input (0-9)
  * @param {string} digit - The digit that was pressed
- * Enforces maximum display length and provides visual feedback when limit is reached
- * May call updateDisplay() directly when starting a new calculation
  */
 function inputDigit(digit) {
   // Define a reasonable maximum length for user input
@@ -66,7 +64,6 @@ function inputDigit(digit) {
 
 /**
  * Provides visual feedback when display limit is reached
- * Temporarily adds a 'flash' class to the display element
  */
 function flashDisplay() {
   const display = document.querySelector("#value-text");
@@ -88,16 +85,27 @@ function inputDecimal(dot) {
     firstOperand = null;
     currentOperator = null;
     resultDisplayed = false;
+    updateDisplay();
     return;
   }
 
   if (waitingForSecondOperand) {
     displayValue = "0.";
-    equationDisplay += "0.";
     waitingForSecondOperand = false;
+
+    // Fix: Update equation display properly when entering decimal after operator
+    const parts = equationDisplay.split(" ");
+    if (parts.length >= 2) {
+      equationDisplay = `${parts[0]} ${parts[1]} 0.`;
+    } else {
+      equationDisplay += "0.";
+    }
+
+    updateDisplay();
     return;
   }
 
+  // Only add decimal if it doesn't already exist
   if (!displayValue.includes(dot)) {
     displayValue += dot;
 
@@ -106,12 +114,16 @@ function inputDecimal(dot) {
     } else if (currentOperator) {
       const parts = equationDisplay.split(" ");
       if (parts.length === 3) {
+        // Make sure the displayValue is properly reflected in equation
         equationDisplay = `${parts[0]} ${parts[1]} ${displayValue}`;
-      } else {
-        equationDisplay += dot;
+      } else if (parts.length === 2) {
+        // When equation has operator but no second operand yet
+        equationDisplay += displayValue;
       }
     }
   }
+
+  updateDisplay();
 }
 
 /**
@@ -119,43 +131,66 @@ function inputDecimal(dot) {
  * @param {string} nextOperator - The operator that was pressed
  */
 function handleOperator(nextOperator) {
+  // Ensure displayValue is a valid number
   const inputValue = parseFloat(displayValue);
 
   // Reset result displayed flag when an operator is pressed
   resultDisplayed = false;
 
+  // If we already have an operator and are waiting for second operand
   if (currentOperator && waitingForSecondOperand) {
     currentOperator = nextOperator;
     const operatorSymbol = getOperatorSymbol(nextOperator);
     const parts = equationDisplay.split(" ");
-    equationDisplay = `${parts[0]} ${operatorSymbol} `;
+
+    // Make sure we're keeping the first part of the equation
+    if (parts.length >= 1) {
+      equationDisplay = `${parts[0]} ${operatorSymbol} `;
+    }
+    updateDisplay();
     return;
   }
 
+  // First operator in the calculation
   if (firstOperand === null) {
-    firstOperand = inputValue;
+    firstOperand = inputValue; // Convert to number
     const operatorSymbol = getOperatorSymbol(nextOperator);
     equationDisplay = `${displayValue} ${operatorSymbol} `;
-  } else if (currentOperator) {
+  }
+  // We already have a first operand and operator, now process them
+  else if (currentOperator) {
+    // Calculate with current values before setting new operator
     const result = operate(currentOperator, firstOperand, inputValue);
+
+    // Handle error strings from operate function
+    if (typeof result === "string") {
+      displayValue = result;
+      equationDisplay += " = " + result;
+      currentOperator = null;
+      waitingForSecondOperand = false;
+      resultDisplayed = true;
+      updateDisplay();
+      return;
+    }
+
     // Round result to avoid display overflow
     displayValue = formatResult(result);
-    firstOperand = parseFloat(displayValue);
+    firstOperand = parseFloat(displayValue); // Convert to number explicitly
 
+    // Update equation display with new operator
     const operatorSymbol = getOperatorSymbol(nextOperator);
     equationDisplay = `${displayValue} ${operatorSymbol} `;
   }
 
   waitingForSecondOperand = true;
   currentOperator = nextOperator;
+  updateDisplay();
 }
 
 /**
  * Formats the result to avoid display overflow
  * @param {number|string} result - The calculation result
  * @returns {string} The formatted result
- * Uses MAX_DISPLAY_LENGTH to determine when to switch to scientific notation
- * For decimal numbers, dynamically calculates available space for decimal places
  */
 function formatResult(result) {
   if (typeof result === "string") {
@@ -165,6 +200,11 @@ function formatResult(result) {
   // Define maximum display length
   const MAX_DISPLAY_LENGTH = 15;
 
+  // Handle floating point precision issues
+  // For example, 0.1 + 0.2 = 0.30000000000000004
+  // Round to 12 decimal places to eliminate most floating point errors
+  result = parseFloat(result.toFixed(12));
+
   // Convert to string to check length
   let resultString = result.toString();
 
@@ -172,20 +212,6 @@ function formatResult(result) {
   if (resultString.length > MAX_DISPLAY_LENGTH) {
     // For very large or small numbers, use scientific notation
     return result.toExponential(MAX_DISPLAY_LENGTH - 7); // Allow space for e+XX notation
-  }
-
-  // For decimals, limit to a reasonable number of decimal places
-  if (resultString.includes(".")) {
-    // Determine available space for decimals
-    const integerPart = Math.floor(Math.abs(result)).toString().length;
-    // Account for negative sign if present
-    const signPart = result < 0 ? 1 : 0;
-    // Account for decimal point
-    const decimalPointLength = 1;
-    // Calculate max decimal places that can fit
-    const maxDecimalPlaces = MAX_DISPLAY_LENGTH - integerPart - signPart - decimalPointLength;
-
-    return String(parseFloat(Number(result).toFixed(Math.max(0, maxDecimalPlaces))));
   }
 
   return resultString;
@@ -295,16 +321,74 @@ function handlePercent() {
  * @returns {number|string} The result of the calculation or error message
  */
 function operate(operatorSymbol, a, b) {
+  // Ensure we're working with numbers
+  a = parseFloat(a);
+  b = parseFloat(b);
+
+  // Check for NaN values
+  if (isNaN(a) || isNaN(b)) {
+    return "Error: Invalid input";
+  }
+
   const operations = {
     "+": (x, y) => x + y,
     "-": (x, y) => x - y,
     "*": (x, y) => x * y,
     "×": (x, y) => x * y,
+    x: (x, y) => x * y,
     "/": (x, y) => (y === 0 ? "Error: Division by zero" : x / y),
     "÷": (x, y) => (y === 0 ? "Error: Division by zero" : x / y),
   };
 
-  return operations[operatorSymbol] ? operations[operatorSymbol](a, b) : b;
+  // Make sure we have a valid operation
+  if (!operations[operatorSymbol]) {
+    return "Error: Invalid operator";
+  }
+
+  return operations[operatorSymbol](a, b);
+}
+
+/**
+ * Handles equals button press
+ */
+function handleEquals() {
+  // Don't do anything if we don't have the needed data
+  if (!currentOperator || waitingForSecondOperand) return;
+
+  const inputValue = parseFloat(displayValue);
+
+  // Store the full equation before showing the result
+  const fullEquation = `${equationDisplay} = `;
+
+  // Calculate the result
+  const result = operate(currentOperator, firstOperand, inputValue);
+
+  // Handle error strings from operate function
+  if (typeof result === "string") {
+    displayValue = result;
+    equationDisplay = fullEquation + result;
+    currentOperator = null;
+    waitingForSecondOperand = false;
+    resultDisplayed = true;
+    updateDisplay();
+    return;
+  }
+
+  // Format result to avoid display overflow
+  displayValue = formatResult(result);
+
+  // Store the result in case we need it for further operations
+  firstOperand = parseFloat(displayValue);
+
+  // Reset state
+  currentOperator = null;
+  waitingForSecondOperand = false;
+  resultDisplayed = true;
+
+  // Show the full equation with result
+  equationDisplay = fullEquation + displayValue;
+
+  updateDisplay();
 }
 
 // Initialize calculator when DOM is fully loaded
@@ -328,7 +412,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
   decimalButton.addEventListener("click", () => {
     inputDecimal(".");
-    updateDisplay();
+    // updateDisplay is called inside inputDecimal
   });
 
   operatorButtons.forEach((button) => {
@@ -342,27 +426,11 @@ document.addEventListener("DOMContentLoaded", function () {
       };
       const operatorSymbol = operatorMap[button.textContent] || button.textContent;
       handleOperator(operatorSymbol);
-      updateDisplay();
+      // updateDisplay is called inside handleOperator
     });
   });
 
-  equalsButton.addEventListener("click", () => {
-    if (!currentOperator || waitingForSecondOperand) return;
-
-    const inputValue = parseFloat(displayValue);
-    const result = operate(currentOperator, firstOperand, inputValue);
-    const fullEquation = equationDisplay + " = ";
-
-    // Format result to avoid display overflow
-    displayValue = formatResult(result);
-    firstOperand = parseFloat(displayValue);
-    currentOperator = null;
-    waitingForSecondOperand = false;
-    resultDisplayed = true; // Set flag to indicate result was displayed
-    equationDisplay = fullEquation;
-
-    updateDisplay();
-  });
+  equalsButton.addEventListener("click", handleEquals);
 
   clearButton.addEventListener("click", () => {
     resetCalculator();
@@ -397,35 +465,21 @@ document.addEventListener("DOMContentLoaded", function () {
     // Decimal point
     else if (event.key === ".") {
       inputDecimal(".");
-      updateDisplay();
+      // updateDisplay is called inside inputDecimal
     }
     // Operators
     else if (["+", "-", "*", "/"].includes(event.key)) {
       handleOperator(event.key);
-      updateDisplay();
+      // updateDisplay is called inside handleOperator
     }
     // Handle 'x' key as multiplication
     else if (event.key === "x") {
       handleOperator("*");
-      updateDisplay();
+      // updateDisplay is called inside handleOperator
     }
     // Equals (Enter or =)
     else if (event.key === "Enter" || event.key === "=") {
-      // Rest of the equals code...
-      if (!currentOperator || waitingForSecondOperand) return;
-
-      const inputValue = parseFloat(displayValue);
-      const result = operate(currentOperator, firstOperand, inputValue);
-      const fullEquation = equationDisplay + " = ";
-
-      displayValue = formatResult(result);
-      firstOperand = parseFloat(displayValue);
-      currentOperator = null;
-      waitingForSecondOperand = false;
-      resultDisplayed = true;
-      equationDisplay = fullEquation;
-
-      updateDisplay();
+      handleEquals();
     }
     // Clear (Escape)
     else if (event.key === "Escape") {
