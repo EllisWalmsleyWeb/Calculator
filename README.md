@@ -3,6 +3,7 @@
 ![image](https://github.com/user-attachments/assets/a55923c2-2702-41bf-96fa-93f9c63d7a83)
 
 Introduction
+
 A fully functional calculator web application built with 100% vanilla JavaScript. This project was created as the final project for The Odin Project foundations course.
 
 Features
@@ -18,6 +19,7 @@ Responsive display with equation history
 Visual feedback for display limits
 
 Demo
+
 [Live Demo](https://elliswalmsleyweb.github.io/Calculator/)
 
 Technologies Used
@@ -66,6 +68,7 @@ Add support for parentheses in calculations
 Add history of calculations
 
 Project Structure
+
 Copy/calculator
 │
 ├── index.html
@@ -74,6 +77,7 @@ Copy/calculator
 Installation
 
 Clone the repository:
+
 Copygit clone https://github.com/EllisWalmsleyWeb/calculator.git
 
 Open index.html in your browser
