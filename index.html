@@ -4,7 +4,49 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Vanilla JS Calculator</title>
+    <link rel="stylesheet" href="style.css" />
     <script src="script.js" defer></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
   </head>
-  <body></body>
+  <body>
+    <header>
+      <h1>Vanilla <em>JavaScript</em> Calculator</h1>
+    </header>
+    <main class="calculator">
+      <div class="display" id="display">123.45</div>
+      <div class="buttons">
+        <button class="clear" id="clear">C</button>
+        <button class="backspace" id="backspace">Del</button>
+        <button class="operator" id="percent">%</button>
+        <button class="operator" id="divide">÷</button>
+
+        <button class="number" id="seven">7</button>
+        <button class="number" id="eight">8</button>
+        <button class="number" id="nine">9</button>
+        <button class="operator" id="multiply">x</button>
+
+        <button class="number" id="four">4</button>
+        <button class="number" id="five">5</button>
+        <button class="number" id="six">6</button>
+        <button class="operator" id="subtract">-</button>
+
+        <button class="number" id="one">1</button>
+        <button class="number" id="two">2</button>
+        <button class="number" id="three">3</button>
+        <button class="operator" id="add">+</button>
+
+        <button class="number" id="zero">0</button>
+        <button class="number" id="decimal">.</button>
+        <button class="equals" id="equals">=</button>
+      </div>
+    </main>
+    <footer>
+      <p>
+        © 2025 Ellis Walmsley |
+        <a href="https://github.com/EllisWalmsleyWeb/Calculator" target="_blank">
+          <i class="fab fa-github github-icon"></i>View Code on GitHub
+        </a>
+      </p>
+    </footer>
+  </body>
 </html>

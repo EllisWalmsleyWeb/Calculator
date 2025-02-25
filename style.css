@@ -1,0 +1,139 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
+
+body {
+  font-family: "Poppins", sans-serif;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  min-height: 100vh;
+  background-color: #f5f5f5;
+  margin: 0;
+  overflow: hidden;
+}
+
+header {
+  text-align: center;
+  margin-bottom: 30px;
+  color: #333;
+  width: 100%;
+  padding: 10px 0;
+  background-color: #fff;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+h1 {
+  font-weight: 800;
+  margin: 0;
+  padding: 15px;
+  font-size: 28px;
+}
+
+h1 em {
+  color: #f1a33c;
+  font-style: normal;
+}
+
+.calculator {
+  background-color: #333;
+  border-radius: 10px;
+  padding: 20px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+  width: 300px;
+  margin: 20px 0;
+}
+
+.display {
+  background-color: #eaeaea;
+  border-radius: 5px;
+  padding: 15px;
+  margin-bottom: 15px;
+  text-align: right;
+  font-size: 24px;
+  font-weight: bold;
+  min-height: 20px;
+  word-wrap: break-word;
+}
+
+.buttons {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-gap: 10px;
+}
+
+button {
+  background-color: #4a4a4a;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  padding: 15px;
+  font-size: 20px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+button:hover {
+  background-color: #5a5a5a;
+}
+
+.operator {
+  background-color: #f1a33c;
+}
+
+.operator:hover {
+  background-color: #f1b85c;
+}
+
+.clear {
+  background-color: #d9534f;
+}
+
+.clear:hover {
+  background-color: #e9635f;
+}
+
+.backspace {
+  background-color: #d9534f;
+}
+
+.backspace:hover {
+  background-color: #e9635f;
+}
+
+.equals {
+  background-color: #5cb85c;
+  grid-column: span 2;
+}
+
+.equals:hover {
+  background-color: #6cc86c;
+}
+
+footer {
+  text-align: center;
+  margin-top: 30px;
+  padding: 15px;
+  color: #666;
+  font-size: 14px;
+  width: 100%;
+  background-color: #fff;
+  box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+}
+
+footer a {
+  color: #f1a33c;
+  text-decoration: none;
+  font-weight: 600;
+  transition: color 0.2s;
+  display: inline-flex;
+  align-items: center;
+}
+
+footer a:hover {
+  color: #d9534f;
+}
+
+.github-icon {
+  margin-right: 6px;
+  vertical-align: middle;
+}
