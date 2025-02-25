@@ -13,7 +13,7 @@ A fully functional calculator web application built with 100% vanilla JavaScript
 - Keyboard support for all operations
 - Continuous calculations (chaining operations)
 - Error handling for division by zero and invalid inputs
-- Responsive display with equation history
+- Responsive display
 - Visual feedback for display limits
 
 ## Demo
