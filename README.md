@@ -1,6 +1,6 @@
 # Calculator
 
-A simple calculator web application built with HTML, CSS, and Vanilla JavaScript. This project is part of [The Odin Project](https://www.theodinproject.com/) curriculum and serves as practice in DOM manipulation, event handling, and JavaScript logic.
+A simple calculator web application built with HTML, CSS, and JavaScript. This project is part of [The Odin Project](https://www.theodinproject.com/) curriculum and serves as practice in DOM manipulation, event handling, and JavaScript logic.
 
 ## Features
 - Basic arithmetic operations (addition, subtraction, multiplication, and division).
@@ -10,7 +10,7 @@ A simple calculator web application built with HTML, CSS, and Vanilla JavaScript
 - Responsive design for different screen sizes.
 
 ## Live Demo
-Check out the live demo: https://elliswalmsleyweb.github.io/Calculator/
+Check out the live demo: [https://elliswalmsleyweb.github.io/Calculator/]
 
 ## Installation
 To run this project locally:
